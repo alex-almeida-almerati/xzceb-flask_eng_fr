@@ -1,7 +1,7 @@
-import json
+""" Provides functions for translating between english and french """
+import os
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,27 +9,34 @@ load_dotenv()
 apikey = os.environ['apikey']
 url = os.environ['url']
 
-### Instance of the IBM Watson Language translator ###
+""" Creates an instance of the IBM Watson Language translator """
 authenticator = IAMAuthenticator(apikey)
 language_translator = LanguageTranslatorV3(
     version='2018-05-01',
     authenticator=authenticator
 )
-
 language_translator.set_service_url(url)
 
 
-def englishToFrench(englishText):
+def english_to_french(english_text):
+    """
+    Uses IBM Watson™ Language Translator API from IBM Cloud platform 
+    to translate english_text and returns french_text
+    """
     result = language_translator.translate(
-        text=englishText,
+        text=english_text,
         model_id='en-fr').get_result()
-    frenchText = result["translations"][0]["translation"]
-    return frenchText
+    french_text = result["translations"][0]["translation"]
+    return french_text
 
 
-def frenchToEnglish(frenchText):
+def french_to_english(french_text):
+    """
+    Uses IBM Watson™ Language Translator API from IBM Cloud platform 
+    to translate french_text and returns english_text
+    """
     result = language_translator.translate(
-        text=frenchText,
+        text=french_text,
         model_id='fr-en').get_result()
-    englishText = result["translations"][0]["translation"]
-    return englishText
+    english_text = result["translations"][0]["translation"]
+    return english_text
